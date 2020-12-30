@@ -54,4 +54,5 @@ Account.delete = function (id, result) {
     });
 };
 
+
 module.exports = Account;
