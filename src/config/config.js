@@ -8,8 +8,11 @@ const dbConn = mysql.createConnection({
     database:'test_node_db'
 });
 dbConn.connect(function (err) {
-    if (err) throw err;
-    console.log("Database Connected!");
+    if (err) {
+        console.log(err);
+    }else{
+        console.log("Database Connected!");
+    }
 });
 
 module.exports = dbConn;
