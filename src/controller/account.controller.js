@@ -2,46 +2,91 @@
 
 const Account = require('../model/account.model');
 
-exports.findAll = function (req, res) {
+exports.getAccounts = function (req, res) {
     Account.findAll(function (err, accounts) {
-        if (err) res.send(err);
-        else res.send(accounts);
+        if (err){
+            res.send(err);
+        } else {
+            res.send({
+              message: "Get all account success",
+              result: {
+                Accounts: accounts
+              },
+            });
+        };
     });
 };
 
-exports.create = function (req, res) {
+exports.storeAccount = function (req, res) {
     const newAccount = new Account(req.body);
     if (Object.keys(req.body).length == 0)
     res.status(400).send({error: true, message:' Please Provide All required field'});
     else Account.create(newAccount, function (err, account) {
-        if (err) res.send(err)
-        else res.json({error: false, message: "Account added succesfully!", data: account});
+        if (err){
+            res.send(err);
+        } else {
+            res.json({
+              message: "Account added success",
+              result: {
+                Account: account,
+              },
+            });
+        };
     });
 };
 
-exports.findById = function (req, res) {
+exports.getAccount = function (req, res) {
     Account.findById(req.params.id, function (err, account) {
-        if (err) res.send(err);
-        else res.json(account);
+        if (err){
+            res.send(err);
+        } else {
+            res.json({
+                message: "Get account success",
+                result:{
+                    Account: account
+                }
+            });
+        };
     });
 };
 
-exports.update = function(req, res){
+exports.updateAccount = function(req, res){
     console.log(req.body, req.params.id);
-    if (Object.keys(req.body).length == 0) 
-    req.status(400).send({error: true, message: 'Please Provide All required field'});
-    
-    else Account.update(req.params.id, new Account(req.body),
-    function (err, account) {
-        if (err) res.send(err);
-        else res.json({error: false, message: 'Account Successfully updated'});        
-    });
+    if (Object.keys(req.body).length == 0) {
+        req
+          .status(400)
+          .send({ error: true, message: "Please Provide All required field" });
+    } else {
+        Account.update(
+          req.params.id,
+          new Account(req.body),
+          function (err, account) {
+            if (err){
+                res.send(err);
+            } else {
+                res.json({
+                  message: "Account Successfully updated",
+                  result: {
+                      Account: account,
+                    },
+                  
+                });
+            };
+        });
+    };
 };
 
-exports.delete = function (req, res) {
+exports.deleteAccount = function (req, res) {
     Account.delete(req.params.id, function (err, account) {
-        if (err) res.send(err);
-        else
-        res.json({error: false, message:'Account Successfully Deleted'});
+        if (err) {
+            res.send(err);
+        } else {
+            res.json({
+                message: "Account Successfully Deleted",
+                result:{
+                    account:account
+                },
+            });
+        };
     });
 };

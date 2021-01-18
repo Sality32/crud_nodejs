@@ -1,9 +1,8 @@
 "use strict";
 
-var dbConn = require('./../config/config');
-//Account
+const dbConn = require('./../config/config');
 
-var Account = function (account) {
+let Account = function (account) {
     this.first_name = account.first_name;
     this.username = account.username;
     this.email = account.email;
@@ -17,23 +16,28 @@ Account.create = function (newAccount, result) {
             result(err, null);
         } else {
             console.log(res.insertId);
-            result(null, res.insertId);
-
-        }
+            result(null, newAccount);
+        };
     });
 };
 
 Account.findById = function (id, result) {
     dbConn.query("SELECT * from account where id= ? ", id, function (err, res) {
-        if (err) result(err, null);
-        else result(null, res);  
+        if (err){
+            result(err, null);
+        } else {
+            result(null, res);
+        };
     });
 };
 
 Account.findAll = function (result) {
     dbConn.query("SELECT * from account", function (err, res) {
-        if (err) result(err, null);
-        else result(null, res);
+        if (err){
+            result(err, null);
+        } else {
+            result(null, res);
+        };
     });
 };
 
@@ -42,16 +46,23 @@ Account.update = function (id, account, result) {
     dbConn.query("UPDATE account SET first_name=?, username=?, email=?, password=? WHERE id=?", 
     [account.first_name, account.username, account.email, account.password, id],
     function (err, res) {
-        if (err) result(err, null);
-        else result(null, res);        
+        if (err){
+            result(err, null);
+        } else {
+            result(null, res);
+        };
     });
 };
 
 Account.delete = function (id, result) {
     dbConn.query("DELETE FROM account WHERE id=?", id, function (err, res) {
-        if (err) result(err, null);
-        else result(null, err);
+        if (err){
+            result(err, null);
+        } else {
+            result(null, err);
+        };
     });
 };
+
 
 module.exports = Account;
